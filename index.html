@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JS - Projekt 1 - Budżet Domowy</title>
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link href="css/main.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="mb-4 text-center">Budżet Domowy</h1>
+      <p id="balance" class="mb-4 balance"></p>
+
+      <div class="row mb-4">
+        <div class="col">
+          <h3>Przychody</h3>
+          <div class="form-group row">
+            <div class="col">
+              <label for="incomeNameInput">Nazwa przychodu:</label>
+              <input type="text" id="incomeNameInput" class="form-control" />
+            </div>
+            <div class="col">
+              <label for="incomeInput">Kwota przychodu:</label>
+              <input type="number" id="incomeInput" class="form-control" />
+            </div>
+          </div>
+          <button onclick="addIncome()" class="btn btn-primary">
+            Dodaj przychód
+          </button>
+          <br /><br />
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Nazwa</th>
+                <th>Kwota</th>
+              </tr>
+            </thead>
+            <tbody id="incomeList"></tbody>
+            <tfoot>
+              <tr>
+                <td>Suma przychodów:</td>
+                <td id="totalIncome" colspan="2" style="font-weight: bold"></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+        <div class="col">
+          <h3>Wydatki</h3>
+          <div class="form-group row">
+            <div class="col">
+              <label for="expenseNameInput">Nazwa wydatku:</label>
+              <input type="text" id="expenseNameInput" class="form-control" />
+            </div>
+            <div class="col">
+              <label for="expenseInput">Kwota wydatku:</label>
+              <input type="number" id="expenseInput" class="form-control" />
+            </div>
+          </div>
+          <button onclick="addExpense()" class="btn btn-danger">
+            Dodaj wydatek
+          </button>
+          <br /><br />
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Nazwa</th>
+                <th>Kwota</th>
+              </tr>
+            </thead>
+            <tbody id="expenseList"></tbody>
+            <tfoot>
+              <tr>
+                <td>Suma wydatków:</td>
+                <td
+                  id="totalExpense"
+                  colspan="2"
+                  style="font-weight: bold"
+                ></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/main.js"></script>
+  </body>
+</html>

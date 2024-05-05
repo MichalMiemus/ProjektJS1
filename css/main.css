@@ -1,0 +1,14 @@
+body {
+  padding: 20px;
+}
+
+.balance {
+  font-size: 1.5em;
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.table tbody > tr > td.vert-aligned {
+  vertical-align: middle;
+}
