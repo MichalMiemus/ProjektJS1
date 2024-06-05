@@ -18,25 +18,39 @@
       <div class="row mb-4">
         <div class="col">
           <h3>Przychody</h3>
-          <div class="form-group row">
-            <div class="col">
-              <label for="incomeNameInput">Nazwa przychodu:</label>
-              <input type="text" id="incomeNameInput" class="form-control" />
+          <form id="incomeForm">
+            <div class="form-group row">
+              <div class="col">
+                <label for="incomeNameInput">Nazwa przychodu:</label>
+                <input
+                  type="text"
+                  id="incomeNameInput"
+                  class="form-control"
+                  required
+                />
+              </div>
+              <div class="col">
+                <label for="incomeInput">Kwota przychodu:</label>
+                <input
+                  type="number"
+                  id="incomeInput"
+                  class="form-control"
+                  step="0.01"
+                  required
+                />
+              </div>
             </div>
-            <div class="col">
-              <label for="incomeInput">Kwota przychodu:</label>
-              <input type="number" id="incomeInput" class="form-control" />
-            </div>
-          </div>
-          <button onclick="addIncome()" class="btn btn-primary">
-            Dodaj przychód
-          </button>
-          <br /><br />
+            <button type="submit" class="btn btn-primary">
+              Dodaj przychód
+            </button>
+            <div id="incomeError" class="text-danger mt-2"></div>
+          </form>
           <table class="table">
             <thead>
               <tr>
                 <th>Nazwa</th>
                 <th>Kwota</th>
+                <th>Akcje</th>
               </tr>
             </thead>
             <tbody id="incomeList"></tbody>
@@ -50,25 +64,37 @@
         </div>
         <div class="col">
           <h3>Wydatki</h3>
-          <div class="form-group row">
-            <div class="col">
-              <label for="expenseNameInput">Nazwa wydatku:</label>
-              <input type="text" id="expenseNameInput" class="form-control" />
+          <form id="expenseForm">
+            <div class="form-group row">
+              <div class="col">
+                <label for="expenseNameInput">Nazwa wydatku:</label>
+                <input
+                  type="text"
+                  id="expenseNameInput"
+                  class="form-control"
+                  required
+                />
+              </div>
+              <div class="col">
+                <label for="expenseInput">Kwota wydatku:</label>
+                <input
+                  type="number"
+                  id="expenseInput"
+                  class="form-control"
+                  step="0.01"
+                  required
+                />
+              </div>
             </div>
-            <div class="col">
-              <label for="expenseInput">Kwota wydatku:</label>
-              <input type="number" id="expenseInput" class="form-control" />
-            </div>
-          </div>
-          <button onclick="addExpense()" class="btn btn-danger">
-            Dodaj wydatek
-          </button>
-          <br /><br />
+            <button type="submit" class="btn btn-danger">Dodaj wydatek</button>
+            <div id="expenseError" class="text-danger mt-2"></div>
+          </form>
           <table class="table">
             <thead>
               <tr>
                 <th>Nazwa</th>
                 <th>Kwota</th>
+                <th>Akcje</th>
               </tr>
             </thead>
             <tbody id="expenseList"></tbody>
@@ -84,6 +110,70 @@
             </tfoot>
           </table>
         </div>
+      </div>
+    </div>
+
+    <div id="editIncomeModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal('editIncomeModal')"
+          >&times;</span
+        >
+        <h2>Edytuj Przychód</h2>
+        <form id="editIncomeForm">
+          <div class="form-group">
+            <label for="editIncomeName">Nazwa przychodu:</label>
+            <input
+              type="text"
+              id="editIncomeName"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="editIncomeAmount">Kwota przychodu:</label>
+            <input
+              type="number"
+              id="editIncomeAmount"
+              class="form-control"
+              step="0.01"
+              required
+            />
+          </div>
+          <div id="editIncomeError" class="text-danger mt-2"></div>
+          <button type="submit" class="btn btn-primary">Zapisz zmiany</button>
+        </form>
+      </div>
+    </div>
+
+    <div id="editExpenseModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal('editExpenseModal')"
+          >&times;</span
+        >
+        <h2>Edytuj Wydatek</h2>
+        <form id="editExpenseForm">
+          <div class="form-group">
+            <label for="editExpenseName">Nazwa wydatku:</label>
+            <input
+              type="text"
+              id="editExpenseName"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="editExpenseAmount">Kwota wydatku:</label>
+            <input
+              type="number"
+              id="editExpenseAmount"
+              class="form-control"
+              step="0.01"
+              required
+            />
+          </div>
+          <div id="editExpenseError" class="text-danger mt-2"></div>
+          <button type="submit" class="btn btn-primary">Zapisz zmiany</button>
+        </form>
       </div>
     </div>
 

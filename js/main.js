@@ -1,17 +1,59 @@
-let incomes = [];
-let expenses = [];
+const incomes = [];
+const expenses = [];
+let currentIncomeIndex = -1;
+let currentExpenseIndex = -1;
+
+document
+  .getElementById("incomeForm")
+  .addEventListener("submit", function (event) {
+    event.preventDefault();
+    addIncome();
+  });
+
+document
+  .getElementById("expenseForm")
+  .addEventListener("submit", function (event) {
+    event.preventDefault();
+    addExpense();
+  });
+
+document
+  .getElementById("editIncomeForm")
+  .addEventListener("submit", function (event) {
+    event.preventDefault();
+    saveIncomeChanges();
+  });
+
+document
+  .getElementById("editExpenseForm")
+  .addEventListener("submit", function (event) {
+    event.preventDefault();
+    saveExpenseChanges();
+  });
 
 function addIncome() {
   const incomeNameInput = document.getElementById("incomeNameInput");
   const incomeInput = document.getElementById("incomeInput");
   const name = incomeNameInput.value.trim();
   const amount = parseFloat(incomeInput.value);
-  if (!isNaN(amount) && name) {
-    incomes.push({ name, amount });
-    updateUI();
-    incomeNameInput.value = "";
-    incomeInput.value = "";
+  const incomeError = document.getElementById("incomeError");
+
+  if (
+    !name ||
+    isNaN(amount) ||
+    amount <= 0 ||
+    !/^\d+(\.\d{1,2})?$/.test(amount)
+  ) {
+    incomeError.textContent =
+      "Proszę podać poprawną nazwę i kwotę przychodu (dodatnia liczba, maksymalnie 2 miejsca po przecinku).";
+    return;
   }
+
+  incomeError.textContent = "";
+  incomes.push({ name, amount });
+  updateUI();
+  incomeNameInput.value = "";
+  incomeInput.value = "";
 }
 
 function addExpense() {
@@ -19,18 +61,30 @@ function addExpense() {
   const expenseInput = document.getElementById("expenseInput");
   const name = expenseNameInput.value.trim();
   const amount = parseFloat(expenseInput.value);
-  if (!isNaN(amount) && name) {
-    expenses.push({ name, amount });
-    updateUI();
-    expenseNameInput.value = "";
-    expenseInput.value = "";
+  const expenseError = document.getElementById("expenseError");
+
+  if (
+    !name ||
+    isNaN(amount) ||
+    amount <= 0 ||
+    !/^\d+(\.\d{1,2})?$/.test(amount)
+  ) {
+    expenseError.textContent =
+      "Proszę podać poprawną nazwę i kwotę wydatku (dodatnia liczba, maksymalnie 2 miejsca po przecinku).";
+    return;
   }
+
+  expenseError.textContent = "";
+  expenses.push({ name, amount });
+  updateUI();
+  expenseNameInput.value = "";
+  expenseInput.value = "";
 }
 
 function updateUI() {
   const incomeList = document.getElementById("incomeList");
-  incomeList.innerHTML = "";
   const expenseList = document.getElementById("expenseList");
+  incomeList.innerHTML = "";
   expenseList.innerHTML = "";
 
   let totalIncome = 0;
@@ -38,26 +92,30 @@ function updateUI() {
 
   incomes.forEach((income, index) => {
     totalIncome += income.amount;
-    const row = incomeList.insertRow();
+    const row = document.createElement("tr");
     row.innerHTML = `
-                    <td><input type="text" value="${income.name}" class="form-control" onchange="editIncomeName(${index}, this.value)"></td>
-                    <td><input type="number" value="${income.amount}" class="form-control" onchange="editIncomeAmount(${index}, this.value)"></td>
-                    <td class="vert-aligned">
-                        <button onclick="deleteIncome(${index})" class="btn btn-sm btn-danger">Usuń</button>
-                    </td>
-                `;
+      <td>${income.name}</td>
+      <td>${income.amount.toFixed(2)}</td>
+      <td class="vert-aligned">
+        <button class="btn btn-sm btn-info" onclick="editIncome(${index})">Edytuj</button>
+        <button class="btn btn-sm btn-danger" onclick="deleteIncome(${index})">Usuń</button>
+      </td>
+    `;
+    incomeList.appendChild(row);
   });
 
   expenses.forEach((expense, index) => {
     totalExpense += expense.amount;
-    const row = expenseList.insertRow();
+    const row = document.createElement("tr");
     row.innerHTML = `
-                    <td><input type="text" value="${expense.name}" class="form-control" onchange="editExpenseName(${index}, this.value)"></td>
-                    <td><input type="number" value="${expense.amount}" class="form-control" onchange="editExpenseAmount(${index}, this.value)"></td>
-                    <td class="vert-aligned">
-                        <button onclick="deleteExpense(${index})" class="btn btn-sm btn-danger">Usuń</button>
-                    </td>
-                `;
+      <td>${expense.name}</td>
+      <td>${expense.amount.toFixed(2)}</td>
+      <td class="vert-aligned">
+        <button class="btn btn-sm btn-info" onclick="editExpense(${index})">Edytuj</button>
+        <button class="btn btn-sm btn-danger" onclick="deleteExpense(${index})">Usuń</button>
+      </td>
+    `;
+    expenseList.appendChild(row);
   });
 
   document.getElementById("totalIncome").textContent = totalIncome.toFixed(2);
@@ -83,24 +141,78 @@ function updateUI() {
   }
 }
 
-function editIncomeName(index, newName) {
-  incomes[index].name = newName.trim();
-  updateUI();
+function openModal(modalId) {
+  document.getElementById(modalId).style.display = "block";
 }
 
-function editIncomeAmount(index, newAmount) {
-  incomes[index].amount = parseFloat(newAmount);
-  updateUI();
+function closeModal(modalId) {
+  document.getElementById(modalId).style.display = "none";
 }
 
-function editExpenseName(index, newName) {
-  expenses[index].name = newName.trim();
-  updateUI();
+function editIncome(index) {
+  currentIncomeIndex = index;
+  const income = incomes[index];
+  document.getElementById("editIncomeName").value = income.name;
+  document.getElementById("editIncomeAmount").value = income.amount;
+  document.getElementById("editIncomeError").textContent = "";
+  openModal("editIncomeModal");
 }
 
-function editExpenseAmount(index, newAmount) {
-  expenses[index].amount = parseFloat(newAmount);
+function saveIncomeChanges() {
+  const newName = document.getElementById("editIncomeName").value.trim();
+  const newAmount = parseFloat(
+    document.getElementById("editIncomeAmount").value
+  );
+  const editIncomeError = document.getElementById("editIncomeError");
+
+  if (
+    !newName ||
+    isNaN(newAmount) ||
+    newAmount <= 0 ||
+    !/^\d+(\.\d{1,2})?$/.test(newAmount)
+  ) {
+    editIncomeError.textContent =
+      "Proszę podać poprawną nazwę i kwotę przychodu (dodatnia liczba, maksymalnie 2 miejsca po przecinku).";
+    return;
+  }
+
+  incomes[currentIncomeIndex].name = newName;
+  incomes[currentIncomeIndex].amount = newAmount;
   updateUI();
+  closeModal("editIncomeModal");
+}
+
+function editExpense(index) {
+  currentExpenseIndex = index;
+  const expense = expenses[index];
+  document.getElementById("editExpenseName").value = expense.name;
+  document.getElementById("editExpenseAmount").value = expense.amount;
+  document.getElementById("editExpenseError").textContent = "";
+  openModal("editExpenseModal");
+}
+
+function saveExpenseChanges() {
+  const newName = document.getElementById("editExpenseName").value.trim();
+  const newAmount = parseFloat(
+    document.getElementById("editExpenseAmount").value
+  );
+  const editExpenseError = document.getElementById("editExpenseError");
+
+  if (
+    !newName ||
+    isNaN(newAmount) ||
+    newAmount <= 0 ||
+    !/^\d+(\.\d{1,2})?$/.test(newAmount)
+  ) {
+    editExpenseError.textContent =
+      "Proszę podać poprawną nazwę i kwotę wydatku (dodatnia liczba, maksymalnie 2 miejsca po przecinku).";
+    return;
+  }
+
+  expenses[currentExpenseIndex].name = newName;
+  expenses[currentExpenseIndex].amount = newAmount;
+  updateUI();
+  closeModal("editExpenseModal");
 }
 
 function deleteIncome(index) {
