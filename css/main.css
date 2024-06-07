@@ -81,3 +81,11 @@ body {
 .table td:nth-child(3) {
   width: 50%;
 }
+
+.bold-text {
+  font-weight: bold;
+}
+
+.validation-error {
+  margin-bottom: 10px;
+}

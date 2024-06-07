@@ -17,7 +17,7 @@
 
       <div class="row mb-4">
         <div class="col">
-          <h3>Przychody</h3>
+          <h2>Przychody</h2>
           <form id="incomeForm">
             <div class="form-group row">
               <div class="col">
@@ -43,7 +43,10 @@
             <button type="submit" class="btn btn-primary">
               Dodaj przychód
             </button>
-            <div id="incomeError" class="text-danger mt-2"></div>
+            <div
+              id="incomeError"
+              class="text-danger mt-2 validation-error"
+            ></div>
           </form>
           <table class="table">
             <thead>
@@ -57,13 +60,13 @@
             <tfoot>
               <tr>
                 <td>Suma przychodów:</td>
-                <td id="totalIncome" colspan="2" style="font-weight: bold"></td>
+                <td id="totalIncome" colspan="2" class="bold-text"></td>
               </tr>
             </tfoot>
           </table>
         </div>
         <div class="col">
-          <h3>Wydatki</h3>
+          <h2>Wydatki</h2>
           <form id="expenseForm">
             <div class="form-group row">
               <div class="col">
@@ -87,7 +90,10 @@
               </div>
             </div>
             <button type="submit" class="btn btn-danger">Dodaj wydatek</button>
-            <div id="expenseError" class="text-danger mt-2"></div>
+            <div
+              id="expenseError"
+              class="text-danger mt-2 validation-error"
+            ></div>
           </form>
           <table class="table">
             <thead>
@@ -101,11 +107,7 @@
             <tfoot>
               <tr>
                 <td>Suma wydatków:</td>
-                <td
-                  id="totalExpense"
-                  colspan="2"
-                  style="font-weight: bold"
-                ></td>
+                <td id="totalExpense" colspan="2" class="bold-text"></td>
               </tr>
             </tfoot>
           </table>
@@ -115,9 +117,7 @@
 
     <div id="editIncomeModal" class="modal">
       <div class="modal-content">
-        <span class="close" onclick="closeModal('editIncomeModal')"
-          >&times;</span
-        >
+        <span class="close" data-modal-id="editIncomeModal">&times;</span>
         <h2>Edytuj Przychód</h2>
         <form id="editIncomeForm">
           <div class="form-group">
@@ -139,7 +139,10 @@
               required
             />
           </div>
-          <div id="editIncomeError" class="text-danger mt-2"></div>
+          <div
+            id="editIncomeError"
+            class="text-danger mt-2 validation-error"
+          ></div>
           <button type="submit" class="btn btn-primary">Zapisz zmiany</button>
         </form>
       </div>
@@ -147,9 +150,7 @@
 
     <div id="editExpenseModal" class="modal">
       <div class="modal-content">
-        <span class="close" onclick="closeModal('editExpenseModal')"
-          >&times;</span
-        >
+        <span class="close" data-modal-id="editExpenseModal">&times;</span>
         <h2>Edytuj Wydatek</h2>
         <form id="editExpenseForm">
           <div class="form-group">
@@ -171,7 +172,10 @@
               required
             />
           </div>
-          <div id="editExpenseError" class="text-danger mt-2"></div>
+          <div
+            id="editExpenseError"
+            class="text-danger mt-2 validation-error"
+          ></div>
           <button type="submit" class="btn btn-primary">Zapisz zmiany</button>
         </form>
       </div>

@@ -31,6 +31,12 @@ document
     saveExpenseChanges();
   });
 
+document.querySelectorAll(".close").forEach(function (element) {
+  element.addEventListener("click", function () {
+    closeModal(element.getAttribute("data-modal-id"));
+  });
+});
+
 function addIncome() {
   const incomeNameInput = document.getElementById("incomeNameInput");
   const incomeInput = document.getElementById("incomeInput");
@@ -94,13 +100,13 @@ function updateUI() {
     totalIncome += income.amount;
     const row = document.createElement("tr");
     row.innerHTML = `
-      <td>${income.name}</td>
-      <td>${income.amount.toFixed(2)}</td>
-      <td class="vert-aligned">
-        <button class="btn btn-sm btn-info" onclick="editIncome(${index})">Edytuj</button>
-        <button class="btn btn-sm btn-danger" onclick="deleteIncome(${index})">Usuń</button>
-      </td>
-    `;
+            <td>${income.name}</td>
+            <td>${income.amount.toFixed(2)}</td>
+            <td class="vert-aligned">
+                <button class="btn btn-sm btn-info edit-income" data-index="${index}">Edytuj</button>
+                <button class="btn btn-sm btn-danger delete-income" data-index="${index}">Usuń</button>
+            </td>
+        `;
     incomeList.appendChild(row);
   });
 
@@ -108,13 +114,13 @@ function updateUI() {
     totalExpense += expense.amount;
     const row = document.createElement("tr");
     row.innerHTML = `
-      <td>${expense.name}</td>
-      <td>${expense.amount.toFixed(2)}</td>
-      <td class="vert-aligned">
-        <button class="btn btn-sm btn-info" onclick="editExpense(${index})">Edytuj</button>
-        <button class="btn btn-sm btn-danger" onclick="deleteExpense(${index})">Usuń</button>
-      </td>
-    `;
+            <td>${expense.name}</td>
+            <td>${expense.amount.toFixed(2)}</td>
+            <td class="vert-aligned">
+                <button class="btn btn-sm btn-info edit-expense" data-index="${index}">Edytuj</button>
+                <button class="btn btn-sm btn-danger delete-expense" data-index="${index}">Usuń</button>
+            </td>
+        `;
     expenseList.appendChild(row);
   });
 
@@ -139,6 +145,30 @@ function updateUI() {
     balance.classList.remove("text-success");
     balance.classList.add("text-danger");
   }
+
+  document.querySelectorAll(".edit-income").forEach(function (button) {
+    button.addEventListener("click", function () {
+      editIncome(button.getAttribute("data-index"));
+    });
+  });
+
+  document.querySelectorAll(".delete-income").forEach(function (button) {
+    button.addEventListener("click", function () {
+      deleteIncome(button.getAttribute("data-index"));
+    });
+  });
+
+  document.querySelectorAll(".edit-expense").forEach(function (button) {
+    button.addEventListener("click", function () {
+      editExpense(button.getAttribute("data-index"));
+    });
+  });
+
+  document.querySelectorAll(".delete-expense").forEach(function (button) {
+    button.addEventListener("click", function () {
+      deleteExpense(button.getAttribute("data-index"));
+    });
+  });
 }
 
 function openModal(modalId) {
